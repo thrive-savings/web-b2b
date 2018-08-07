@@ -113,6 +113,7 @@ module.exports = options => ({
       },
     ],
   },
+  externals: options.externals,
   plugins: options.plugins.concat([
     new webpack.ProvidePlugin({
       // make fetch available

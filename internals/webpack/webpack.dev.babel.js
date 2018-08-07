@@ -56,6 +56,10 @@ module.exports = require('./webpack.base.babel')({
     minimize: false,
   },
 
+  externals: {
+    config: JSON.stringify(require('../../app/config/dev.json')), //eslint-disable-line
+  },
+
   // Add development plugins
   plugins: dependencyHandlers().concat(plugins), // eslint-disable-line no-use-before-define
 

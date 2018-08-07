@@ -34,6 +34,9 @@ module.exports = require('./webpack.base.babel')({
     path: outputPath,
     library: '[name]',
   },
+  externals: {
+    config: JSON.stringify(require('../../app/config/dev.json')), //eslint-disable-line
+  },
   plugins: [
     new webpack.DllPlugin({
       name: '[name]',

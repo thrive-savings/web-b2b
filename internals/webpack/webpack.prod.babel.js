@@ -26,6 +26,10 @@ module.exports = require('./webpack.base.babel')({
     runtimeChunk: true,
   },
 
+  externals: {
+    config: JSON.stringify(require('../../app/config/prod.json')), //eslint-disable-line
+  },
+
   plugins: [
     // Minify and optimize the index.html
     new HtmlWebpackPlugin({

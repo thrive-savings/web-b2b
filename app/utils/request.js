@@ -40,7 +40,14 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
-  return fetch(url, options)
+  const defaultOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  };
+
+  return fetch(url, Object.assign({}, defaultOptions, options))
     .then(checkStatus)
     .then(parseJSON);
 }

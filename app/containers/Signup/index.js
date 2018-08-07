@@ -1,6 +1,6 @@
 /**
  *
- * Login
+ * Signup
  *
  */
 
@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import Helmet from 'react-helmet';
-import { push } from 'react-router-redux';
 
 import { makeSelectAuth } from 'containers/App/selectors';
 
@@ -22,14 +21,17 @@ import ErrorMessage from 'components/ErrorMessage';
 import injectSaga from 'utils/injectSaga';
 import saga from './saga';
 
-import { loginSubmit } from './actions';
+import { signupSubmit } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
-export class Login extends React.Component {
+export class Signup extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      code: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       validationError: '',
@@ -42,6 +44,15 @@ export class Login extends React.Component {
   handleInputChange(e, type) {
     const { value, validationMessage } = e.target;
     switch (type) {
+      case 'code':
+        this.setState({ code: value, validationError: validationMessage });
+        break;
+      case 'firstName':
+        this.setState({ firstName: value, validationError: validationMessage });
+        break;
+      case 'lastName':
+        this.setState({ lastName: value, validationError: validationMessage });
+        break;
       case 'email':
         this.setState({ email: value, validationError: validationMessage });
         break;
@@ -59,58 +70,63 @@ export class Login extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password } = this.state;
-    console.log(`Email: ${email}, Password: ${password}`);
+    const { code, firstName, lastName, email, password } = this.state;
+    console.log(
+      `Code: ${code}, First Name: ${firstName}, Last Name: ${lastName}, Email: ${email}, Password: ${password}`,
+    );
 
-    // TODO: validate input
+    // TODO: Validate input
 
-    this.props.loginSubmit({ email, password });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      data: { jwt },
-    } = nextProps.auth;
-    if (jwt) {
-      nextProps.changeRoute('/');
-    }
+    this.props.signupSubmit({ code, firstName, lastName, email, password });
   }
 
   render() {
     const { validationError } = this.state;
-
-    const { loading } = this.props.auth;
-
     return (
       <FormBox>
         <Helmet
-          title="Login"
-          meta={[{ name: 'description', content: 'Dashboard Login' }]}
+          title="Sign Up"
+          meta={[{ name: 'description', content: 'Dashboard Sign Up' }]}
+        />
+        <TextInput
+          onChange={this.handleInputChange}
+          type="code"
+          placeholder="Employer Code"
+          required
+        />
+        <TextInput
+          onChange={this.handleInputChange}
+          type="firstName"
+          placeholder="First Name"
+          required
+        />
+        <TextInput
+          onChange={this.handleInputChange}
+          type="lastName"
+          placeholder="Last Name"
+          required
         />
         <TextInput
           onChange={this.handleInputChange}
           type="email"
           placeholder="Email"
+          required
         />
         <TextInput
           onChange={this.handleInputChange}
           type="password"
           placeholder="Password"
+          required
         />
         {validationError && <ErrorMessage msg={validationError} />}
-        <Button
-          text={loading ? 'Logging in ...' : 'LOG IN'}
-          onClick={this.handleSubmit}
-        />
+        <Button text="SIGN UP" onClick={this.handleSubmit} />
       </FormBox>
     );
   }
 }
 
-Login.propTypes = {
-  loginSubmit: PropTypes.func.isRequired,
-  changeRoute: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
+Signup.propTypes = {
+  signupSubmit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -119,8 +135,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginSubmit: payload => dispatch(loginSubmit(payload)),
-    changeRoute: route => dispatch(push(route)),
+    signupSubmit: payload => dispatch(signupSubmit(payload)),
   };
 }
 
@@ -129,9 +144,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withSaga = injectSaga({ key: 'login', saga });
+const withSaga = injectSaga({ key: 'signup', saga });
 
 export default compose(
   withSaga,
   withConnect,
-)(Login);
+)(Signup);
