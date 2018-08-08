@@ -81,6 +81,9 @@ export class Login extends React.Component {
 
     const { loading } = this.props.auth;
 
+    console.log('----Login Rendering----');
+    console.log(this.props.auth);
+
     return (
       <FormBox>
         <Helmet

@@ -12,7 +12,7 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -22,13 +22,15 @@ import styled from 'styled-components';
 
 import { colors } from 'components/Variables';
 
+import PrivateRoute from 'components/PrivateRoute';
+
 import Header from 'components/Header';
 import Login from 'containers/Login';
 import Signup from 'containers/Signup';
 
 import injectReducer from 'utils/injectReducer';
-import { makeSelectAuth } from './selectors';
 import reducer from './reducer';
+import { makeSelectAuth } from './selectors';
 
 // import NotFoundPage from 'containers/NotFoundPage/Loadable';
 const HomePage = () => <h1>Home Page</h1>;
@@ -46,28 +48,31 @@ const ContentWrapper = styled.div`
   background: ${colors.grey.lightest};
 `;
 
-export const App = () => (
-  <AppWrapper>
-    <Helmet
-      titleTemplate="%s - Thrive"
-      defaultTitle="Thrive"
-      meta={[{ name: 'description', content: 'Thrive Dashboard' }]}
-    />
-    <Header />
+export const App = props => {
+  console.log(props.auth);
+  return (
+    <AppWrapper>
+      <Helmet
+        titleTemplate="%s - Thrive"
+        defaultTitle="Thrive"
+        meta={[{ name: 'description', content: 'Thrive Dashboard' }]}
+      />
+      <Header />
 
-    <ContentWrapper>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/signup" component={Signup} />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </ContentWrapper>
-  </AppWrapper>
-);
+      <ContentWrapper>
+        <Switch>
+          <PrivateRoute exact path="/" component={HomePage} auth={props.auth} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </ContentWrapper>
+    </AppWrapper>
+  );
+};
 
 App.propTypes = {
-  // auth: PropTypes.object,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
