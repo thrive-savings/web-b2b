@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import { colors } from 'components/Variables';
 
-import LogoSource from './logo-white.png';
+import LogoSource from 'images/logo-white.png';
 
 const HeaderWrapper = styled.div`
   background: linear-gradient(to right, ${colors.blue}, ${colors.green});

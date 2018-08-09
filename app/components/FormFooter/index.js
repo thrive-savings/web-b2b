@@ -17,6 +17,7 @@ const P = styled.p`
 
 const Button = styled.button`
   color: ${colors.blue};
+  cursor: pointer;
 `;
 
 function FormFooter(props) {

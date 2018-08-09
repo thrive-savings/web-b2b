@@ -24,24 +24,25 @@ import PrivateRoute from 'components/PrivateRoute';
 import Header from 'components/Header';
 import Login from 'containers/Login';
 import Signup from 'containers/Signup';
+import Dashboard from 'containers/Dashboard/Loadable';
 
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 
 // import NotFoundPage from 'containers/NotFoundPage/Loadable';
-const HomePage = () => <h1>Home Page</h1>;
 const NotFoundPage = () => <h1>Not Found Page</h1>;
 
 const AppWrapper = styled.div`
-  margin: 0 auto;
+  min-height: 100vh;
   display: flex;
-  min-height: 100%;
   flex-direction: column;
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
-  background: ${colors.grey.lightest};
+  flex: 1;
+  flex-direction: row;
+  background: ${colors.grey.light};
 `;
 
 export const App = () => (
@@ -55,7 +56,7 @@ export const App = () => (
 
     <ContentWrapper>
       <Switch>
-        <PrivateRoute exact path="/" component={HomePage} />
+        <PrivateRoute exact path="/" component={Dashboard} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
         <Route component={NotFoundPage} />
