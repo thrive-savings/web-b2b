@@ -6,10 +6,6 @@ const makeSelectLocation = () =>
 
 const selectAuth = state => state.get('auth');
 const makeSelectAuth = () =>
-  createSelector(selectAuth, substate => {
-    console.log('-----Make Select Auth-----');
-    console.log(substate.toJS());
-    return substate.toJS();
-  });
+  createSelector(selectAuth, substate => substate.toJS());
 
 export { makeSelectLocation, makeSelectAuth };

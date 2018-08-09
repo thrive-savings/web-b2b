@@ -1,14 +1,11 @@
 /**
  * Create the store with dynamic reducers
  */
-import throttle from 'lodash/throttle';
-
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { loadState, saveState } from 'utils/localStorage';
 import createReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -35,23 +32,10 @@ export default function configureStore(initialState = {}, history) {
       : compose;
   /* eslint-enable */
 
-  const persistedState = loadState();
-  console.log('Creating Store');
-  console.log('-----Persisted State-----');
-  console.log(persistedState);
-  console.log('-----Initial State-----');
-  console.log(initialState);
-
   const store = createStore(
     createReducer(),
-    fromJS(persistedState || initialState),
+    fromJS(initialState),
     composeEnhancers(...enhancers),
-  );
-
-  store.subscribe(
-    throttle(() => {
-      saveState(store.getState());
-    }, 1000),
   );
 
   // Extensions

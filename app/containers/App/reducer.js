@@ -15,6 +15,8 @@ import {
   SIGNUP_FAILURE,
 } from 'containers/Signup/constants';
 
+import { saveState } from 'utils/localStorage';
+
 export const initialState = fromJS({
   loading: false,
   data: {},
@@ -28,6 +30,7 @@ function authReducer(state = initialState, action) {
     case LOGIN_SUBMIT:
       return state.set('loading', true).set('error', false);
     case LOGIN_SUCCESS:
+      saveState(action.payload.data);
       return state
         .set('loading', false)
         .set('error', false)
@@ -40,11 +43,18 @@ function authReducer(state = initialState, action) {
 
     // Signup cases
     case SIGNUP_SUBMIT:
-      return state;
+      return state.set('loading', true).set('error', false);
     case SIGNUP_SUCCESS:
-      return state;
+      saveState(action.payload.data);
+      return state
+        .set('loading', false)
+        .set('error', false)
+        .set('data', action.payload.data);
     case SIGNUP_FAILURE:
-      return state;
+      return state
+        .set('loading', false)
+        .set('error', true)
+        .set('errorMessage', true);
 
     default:
       return state;

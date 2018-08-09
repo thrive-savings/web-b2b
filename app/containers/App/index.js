@@ -12,10 +12,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
@@ -30,7 +27,6 @@ import Signup from 'containers/Signup';
 
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
-import { makeSelectAuth } from './selectors';
 
 // import NotFoundPage from 'containers/NotFoundPage/Loadable';
 const HomePage = () => <h1>Home Page</h1>;
@@ -48,42 +44,26 @@ const ContentWrapper = styled.div`
   background: ${colors.grey.lightest};
 `;
 
-export const App = props => {
-  console.log(props.auth);
-  return (
-    <AppWrapper>
-      <Helmet
-        titleTemplate="%s - Thrive"
-        defaultTitle="Thrive"
-        meta={[{ name: 'description', content: 'Thrive Dashboard' }]}
-      />
-      <Header />
+export const App = () => (
+  <AppWrapper>
+    <Helmet
+      titleTemplate="%s - Thrive"
+      defaultTitle="Thrive"
+      meta={[{ name: 'description', content: 'Thrive Dashboard' }]}
+    />
+    <Header />
 
-      <ContentWrapper>
-        <Switch>
-          <PrivateRoute exact path="/" component={HomePage} auth={props.auth} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </ContentWrapper>
-    </AppWrapper>
-  );
-};
-
-App.propTypes = {
-  auth: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = createStructuredSelector({
-  auth: makeSelectAuth(),
-});
-
-const withConnect = connect(mapStateToProps);
+    <ContentWrapper>
+      <Switch>
+        <PrivateRoute exact path="/" component={HomePage} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={Signup} />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </ContentWrapper>
+  </AppWrapper>
+);
 
 const withReducer = injectReducer({ key: 'auth', reducer });
 
-export default compose(
-  withReducer,
-  withConnect,
-)(App);
+export default compose(withReducer)(App);

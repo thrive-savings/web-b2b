@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { push } from 'react-router-redux';
 import Helmet from 'react-helmet';
 
 import { makeSelectAuth } from 'containers/App/selectors';
@@ -80,8 +81,19 @@ export class Signup extends React.Component {
     this.props.signupSubmit({ code, firstName, lastName, email, password });
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      data: { jwt },
+    } = nextProps.auth;
+    if (jwt) {
+      nextProps.changeRoute('/');
+    }
+  }
+
   render() {
     const { validationError } = this.state;
+    const { loading } = this.props.auth;
+
     return (
       <FormBox>
         <Helmet
@@ -119,7 +131,10 @@ export class Signup extends React.Component {
           required
         />
         {validationError && <ErrorMessage msg={validationError} />}
-        <Button text="SIGN UP" onClick={this.handleSubmit} />
+        <Button
+          text={loading ? 'Signing up ...' : 'SIGN UP'}
+          onClick={this.handleSubmit}
+        />
       </FormBox>
     );
   }
@@ -127,6 +142,8 @@ export class Signup extends React.Component {
 
 Signup.propTypes = {
   signupSubmit: PropTypes.func.isRequired,
+  changeRoute: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -136,6 +153,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     signupSubmit: payload => dispatch(signupSubmit(payload)),
+    changeRoute: route => dispatch(push(route)),
   };
 }
 
