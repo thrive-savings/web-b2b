@@ -15,6 +15,7 @@ import Helmet from 'react-helmet';
 import { makeSelectAuth } from 'containers/App/selectors';
 
 import FormBox from 'components/FormBox';
+import FormFooter from 'components/FormFooter';
 import TextInput from 'components/TextInput';
 import Button from 'components/Button';
 import ErrorMessage from 'components/ErrorMessage';
@@ -134,6 +135,11 @@ export class Signup extends React.Component {
         <Button
           text={loading ? 'Signing up ...' : 'SIGN UP'}
           onClick={this.handleSubmit}
+        />
+        <FormFooter
+          label="Already have an account?"
+          buttonText="Log in"
+          onClick={() => this.props.changeRoute('/login')}
         />
       </FormBox>
     );

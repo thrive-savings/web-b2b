@@ -15,6 +15,7 @@ import { push } from 'react-router-redux';
 import { makeSelectAuth } from 'containers/App/selectors';
 
 import FormBox from 'components/FormBox';
+import FormFooter from 'components/FormFooter';
 import TextInput from 'components/TextInput';
 import Button from 'components/Button';
 import ErrorMessage from 'components/ErrorMessage';
@@ -101,6 +102,11 @@ export class Login extends React.Component {
         <Button
           text={loading ? 'Logging in ...' : 'LOG IN'}
           onClick={this.handleSubmit}
+        />
+        <FormFooter
+          label="Don't have an account?"
+          buttonText="Sign up"
+          onClick={() => this.props.changeRoute('/signup')}
         />
       </FormBox>
     );
