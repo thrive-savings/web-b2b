@@ -1,3 +1,4 @@
 {
-  "apiRoot": "http://localhost:3000"
+  "apiRoot": "http://localhost:3000",
+  "websiteUrl": "https://thrivesavings.com"
 }

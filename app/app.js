@@ -13,6 +13,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 
@@ -29,6 +30,13 @@ import configureStore from './configureStore';
 
 // Import CSS reset and Global Styles
 import './global-styles';
+
+// Observe loading of Lato font
+const latoObserver = new FontFaceObserver('Lato', {});
+// When Lato is loaded, add a font-family using Lato to the body
+latoObserver.load().then(() => {
+  document.body.classList.add('fontLoaded');
+});
 
 // Create redux store with history
 const initialState = {};

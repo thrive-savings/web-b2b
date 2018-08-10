@@ -4,6 +4,8 @@
  *
  */
 import { fromJS } from 'immutable';
+import { saveState } from 'utils/localStorage';
+
 import {
   LOGIN_SUBMIT,
   LOGIN_SUCCESS,
@@ -14,8 +16,7 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
 } from 'containers/Signup/constants';
-
-import { saveState } from 'utils/localStorage';
+import { LOGOUT } from './constants';
 
 export const initialState = fromJS({
   loading: false,
@@ -55,6 +56,9 @@ function authReducer(state = initialState, action) {
         .set('loading', false)
         .set('error', true)
         .set('errorMessage', true);
+
+    case LOGOUT:
+      return initialState;
 
     default:
       return state;

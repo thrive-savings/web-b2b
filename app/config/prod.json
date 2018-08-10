@@ -1,3 +1,4 @@
 {
-  "apiRoot": "http://api.thrivesavings.com"
+  "apiRoot": "http://api.thrivesavings.com",
+  "websiteUrl": "https://thrivesavings.com"
 }

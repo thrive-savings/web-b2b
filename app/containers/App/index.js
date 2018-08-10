@@ -42,7 +42,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex: 1;
   flex-direction: row;
-  background: ${colors.grey.light};
+  background: ${colors.grey.lightest};
 `;
 
 export const App = () => (
