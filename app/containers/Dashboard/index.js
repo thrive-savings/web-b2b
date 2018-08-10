@@ -16,6 +16,9 @@ import config from 'config';
 import styled from 'styled-components';
 
 import Sidebar from 'components/Sidebar/Loadable';
+import OverviewBox from 'components/OverviewBox/Loadable';
+import EmployeePolling from 'components/EmployeePolling/Loadable';
+import EmployeeGoals from 'components/EmployeeGoals/Loadable';
 
 import { clearState } from 'utils/localStorage';
 import { logout } from 'containers/App/actions';
@@ -38,6 +41,20 @@ const Content = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+`;
+
+const ContentColumn0 = styled.div`
+  flex: 0.6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
+const ContentColumn1 = styled.div`
+  flex: 0.4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -109,8 +126,13 @@ export class Dashboard extends React.Component {
           bottomLinks={bottomLinks}
         />
         <Content>
-          <p> text 0 </p>
-          <p> text 1 </p>
+          <ContentColumn0>
+            <OverviewBox />
+            <EmployeePolling />
+          </ContentColumn0>
+          <ContentColumn1>
+            <EmployeeGoals />
+          </ContentColumn1>
         </Content>
       </Container>
     );

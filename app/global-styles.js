@@ -26,6 +26,5 @@ injectGlobal`
   p,
   label {
     font-family: Lato, Georgia, Times, 'Times New Roman', serif;
-    line-height: 1.5em;    
   }
 `;
