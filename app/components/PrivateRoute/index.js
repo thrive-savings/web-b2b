@@ -13,7 +13,7 @@ class PrivateRoute extends Component {
   constructor(props) {
     super(props);
 
-    const persistedAuth = loadState();
+    const persistedAuth = loadState('auth');
     this.state = {
       persistedAuth,
     };

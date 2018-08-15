@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { colors } from 'components/Variables';
 
@@ -54,28 +54,38 @@ const ColumnText = styled.p`
   margin: -10px 0;
 `;
 
-function OverviewBox() {
+const getDollarString = amount => {
+  let dollars = amount / 100;
+  dollars = dollars % 1 === 0 ? dollars : dollars.toFixed(2);
+  dollars.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  return `$${dollars}`;
+};
+
+function OverviewBox(props) {
+  const { usersCount, totalSaved, totalContributions } = props.data;
   return (
     <Container>
       <Label>Overview</Label>
       <Content>
         <Column>
           <ColumnLabel>Thrive Users</ColumnLabel>
-          <ColumnText>0</ColumnText>
+          <ColumnText>{usersCount || 0}</ColumnText>
         </Column>
         <Column>
           <ColumnLabel>Total Saved</ColumnLabel>
-          <ColumnText>$0</ColumnText>
+          <ColumnText>{getDollarString(totalSaved || 0)}</ColumnText>
         </Column>
         <Column>
           <ColumnLabel>Total Contributions</ColumnLabel>
-          <ColumnText>$0</ColumnText>
+          <ColumnText>{getDollarString(totalContributions || 0)}</ColumnText>
         </Column>
       </Content>
     </Container>
   );
 }
 
-OverviewBox.propTypes = {};
+OverviewBox.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default OverviewBox;

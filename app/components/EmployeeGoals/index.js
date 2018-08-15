@@ -5,14 +5,11 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { colors } from 'components/Variables';
 
-import rainyDayIcon from 'images/goals/rainyDay.png';
-import travelIcon from 'images/goals/travel.png';
-import retirementIcon from 'images/goals/retirement.png';
-import homeIcon from 'images/goals/home.png';
+import goalCategories from './goalCategories';
 
 const Container = styled.div`
   display: flex;
@@ -53,8 +50,8 @@ const PlaceholderIcons = styled.div`
   padding: 1s0px;
 `;
 
-const PlaceholderIcon = styled.img`
-  margin: 10px;
+const GoalIcon = styled.img`
+  margin: 10px 20px 10px 0;
 `;
 
 const PlaceholderText = styled.p`
@@ -63,27 +60,90 @@ const PlaceholderText = styled.p`
   letter-spacing: 0.5pt;
 `;
 
-function EmployeeGoals() {
+const GoalRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const GoalName = styled.p`
+  color: ${colors.charcoal};
+  align-self: center;
+  text-align: left;
+  letter-spacing: 1pt;
+  text-transform: uppercase;
+`;
+
+const GoalInfoHolder = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+const GoalPercentageText = styled.p`
+  color: ${colors.charcoal};
+  font-size: 25px;
+  text-align: right;
+  letter-spacing: 0.5pt;
+  line-height: 0;
+`;
+
+const GoalCountText = styled.p`
+  color: ${colors.charcoal};
+  font-size: 15px;
+  text-align: right;
+  letter-spacing: 0.5pt;
+  line-height: 0;
+  margin-top: -1px;
+`;
+
+function EmployeeGoals(props) {
+  const goals = props.data;
+
+  const goalRows = [];
+  Object.keys(goals).forEach(category => {
+    if (!(category in goalCategories)) return;
+    const { icon, display } = goalCategories[category];
+    const { count, percentage } = goals[category];
+    goalRows.push(
+      <GoalRow key={category}>
+        <GoalIcon src={icon} alt={category} />
+        <GoalName>{display}</GoalName>
+        <GoalInfoHolder>
+          <GoalPercentageText>{percentage}%</GoalPercentageText>
+          <GoalCountText>{count} employees</GoalCountText>
+        </GoalInfoHolder>
+      </GoalRow>,
+    );
+  });
+
   return (
     <Container>
       <Label>Saving Goals</Label>
       <Content>
-        <PlaceholderContainer>
-          <PlaceholderIcons>
-            <PlaceholderIcon src={travelIcon} alt="Travel" />
-            <PlaceholderIcon src={rainyDayIcon} alt="RainyDay" />
-            <PlaceholderIcon src={retirementIcon} alt="Retirement" />
-            <PlaceholderIcon src={homeIcon} alt="Home" />
-          </PlaceholderIcons>
-          <PlaceholderText>
-            Once employees set up goals, they will appear here.
-          </PlaceholderText>
-        </PlaceholderContainer>
+        {Object.keys(goals).length ? (
+          <div>{goalRows}</div>
+        ) : (
+          <PlaceholderContainer>
+            <PlaceholderIcons>
+              <GoalIcon src={goalCategories.Travel.icon} alt="Travel" />
+              <GoalIcon src={goalCategories.RainyDay.icon} alt="RainyDay" />
+              <GoalIcon src={goalCategories.Retirement.icon} alt="Retirement" />
+              <GoalIcon src={goalCategories.Home.icon} alt="Home" />
+            </PlaceholderIcons>
+            <PlaceholderText>
+              Once employees set up goals, they will appear here.
+            </PlaceholderText>
+          </PlaceholderContainer>
+        )}
       </Content>
     </Container>
   );
 }
 
-EmployeeGoals.propTypes = {};
+EmployeeGoals.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default EmployeeGoals;

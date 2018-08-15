@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
 
+import { loadState } from './localStorage';
+
 /**
  * Parses the JSON returned by a network request
  *
@@ -46,6 +48,12 @@ export default function request(url, options) {
       'Content-Type': 'application/json; charset=utf-8',
     },
   };
+
+  // Get JWT if exists
+  const persistedUser = loadState('auth');
+  if (persistedUser && persistedUser.jwt) {
+    defaultOptions.headers.Authorization = `Bearer ${persistedUser.jwt}`;
+  }
 
   return fetch(url, Object.assign({}, defaultOptions, options))
     .then(checkStatus)

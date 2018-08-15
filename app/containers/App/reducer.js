@@ -23,42 +23,31 @@ export const initialState = fromJS({
   data: {},
   error: false,
   errorMessage: '',
+  loggedOut: false,
 });
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
     // Login cases
     case LOGIN_SUBMIT:
-      return state.set('loading', true).set('error', false);
+      return initialState.set('loading', true);
     case LOGIN_SUCCESS:
-      saveState(action.payload.data);
-      return state
-        .set('loading', false)
-        .set('error', false)
-        .set('data', action.payload.data);
+      saveState(action.payload.data, 'auth');
+      return initialState.set('data', action.payload.data);
     case LOGIN_FAILURE:
-      return state
-        .set('loading', false)
-        .set('error', true)
-        .set('errorMessage', true);
+      return initialState.set('error', true).set('errorMessage', true);
 
     // Signup cases
     case SIGNUP_SUBMIT:
-      return state.set('loading', true).set('error', false);
+      return initialState.set('loading', true);
     case SIGNUP_SUCCESS:
-      saveState(action.payload.data);
-      return state
-        .set('loading', false)
-        .set('error', false)
-        .set('data', action.payload.data);
+      saveState(action.payload.data, 'auth');
+      return initialState.set('data', action.payload.data);
     case SIGNUP_FAILURE:
-      return state
-        .set('loading', false)
-        .set('error', true)
-        .set('errorMessage', true);
+      return initialState.set('error', true).set('errorMessage', true);
 
     case LOGOUT:
-      return initialState;
+      return initialState.set('loggedOut', true);
 
     default:
       return state;

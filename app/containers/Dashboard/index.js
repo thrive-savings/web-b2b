@@ -30,6 +30,8 @@ import makeSelectDashboard from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
+import { fetchEmployeeDataSubmit } from './actions';
+
 const Container = styled.div`
   flex: 1;
   display: flex;
@@ -43,14 +45,14 @@ const Content = styled.div`
   justify-content: space-around;
 `;
 
-const ContentColumn0 = styled.div`
+const ContentColumnLeft = styled.div`
   flex: 0.6;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 `;
 
-const ContentColumn1 = styled.div`
+const ContentColumnRight = styled.div`
   flex: 0.4;
   display: flex;
   flex-direction: column;
@@ -59,6 +61,10 @@ const ContentColumn1 = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class Dashboard extends React.Component {
+  componentDidMount() {
+    this.props.fetchEmployeeDataSubmit();
+  }
+
   handleSidebarClick(link) {
     switch (link) {
       case 'dashboard':
@@ -73,15 +79,17 @@ export class Dashboard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      data: { jwt },
-    } = nextProps.auth;
-    if (!jwt) {
-      nextProps.changeRoute('/login');
+    if (nextProps.auth.loggedOut) {
+      this.props.changeRoute('/login');
     }
   }
 
   render() {
+    const {
+      data: { overview, goals },
+    } = this.props.dashboard;
+    console.log({ ...overview, ...goals });
+
     const mainLinks = [
       {
         key: 'dashboard',
@@ -126,13 +134,13 @@ export class Dashboard extends React.Component {
           bottomLinks={bottomLinks}
         />
         <Content>
-          <ContentColumn0>
-            <OverviewBox />
+          <ContentColumnLeft>
+            <OverviewBox data={overview || {}} />
             <EmployeePolling />
-          </ContentColumn0>
-          <ContentColumn1>
-            <EmployeeGoals />
-          </ContentColumn1>
+          </ContentColumnLeft>
+          <ContentColumnRight>
+            <EmployeeGoals data={goals || {}} />
+          </ContentColumnRight>
         </Content>
       </Container>
     );
@@ -141,6 +149,8 @@ export class Dashboard extends React.Component {
 
 Dashboard.propTypes = {
   auth: PropTypes.object.isRequired,
+  dashboard: PropTypes.object.isRequired,
+  fetchEmployeeDataSubmit: PropTypes.func.isRequired,
   changeRoute: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
 };
@@ -152,6 +162,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    fetchEmployeeDataSubmit: () => dispatch(fetchEmployeeDataSubmit()),
     changeRoute: route => dispatch(push(route)),
     logout: () => dispatch(logout()),
   };
