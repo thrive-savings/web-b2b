@@ -73,11 +73,6 @@ export class Signup extends React.Component {
 
   handleSubmit() {
     const { code, firstName, lastName, email, password } = this.state;
-    console.log(
-      `Code: ${code}, First Name: ${firstName}, Last Name: ${lastName}, Email: ${email}, Password: ${password}`,
-    );
-
-    // TODO: Validate input
 
     this.props.signupSubmit({ code, firstName, lastName, email, password });
   }
@@ -93,7 +88,7 @@ export class Signup extends React.Component {
 
   render() {
     const { validationError } = this.state;
-    const { loading } = this.props.auth;
+    const { loading, error, errorMessage } = this.props.auth;
 
     return (
       <FormBox>
@@ -132,6 +127,7 @@ export class Signup extends React.Component {
           required
         />
         {validationError && <ErrorMessage msg={validationError} />}
+        {error && <ErrorMessage msg={errorMessage} />}
         <Button
           text={loading ? 'Signing up ...' : 'SIGN UP'}
           onClick={this.handleSubmit}

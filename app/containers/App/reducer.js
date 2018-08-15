@@ -35,7 +35,10 @@ function authReducer(state = initialState, action) {
       saveState(action.payload.data, 'auth');
       return initialState.set('data', action.payload.data);
     case LOGIN_FAILURE:
-      return initialState.set('error', true).set('errorMessage', true);
+      console.log(action);
+      return initialState
+        .set('error', true)
+        .set('errorMessage', 'Server Error');
 
     // Signup cases
     case SIGNUP_SUBMIT:
@@ -44,7 +47,9 @@ function authReducer(state = initialState, action) {
       saveState(action.payload.data, 'auth');
       return initialState.set('data', action.payload.data);
     case SIGNUP_FAILURE:
-      return initialState.set('error', true).set('errorMessage', true);
+      return initialState
+        .set('error', true)
+        .set('errorMessage', 'Server Error');
 
     case LOGOUT:
       return initialState.set('loggedOut', true);

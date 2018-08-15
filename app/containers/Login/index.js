@@ -61,9 +61,6 @@ export class Login extends React.Component {
 
   handleSubmit() {
     const { email, password } = this.state;
-    console.log(`Email: ${email}, Password: ${password}`);
-
-    // TODO: validate input
 
     this.props.loginSubmit({ email, password });
   }
@@ -79,8 +76,7 @@ export class Login extends React.Component {
 
   render() {
     const { validationError } = this.state;
-
-    const { loading } = this.props.auth;
+    const { loading, error, errorMessage } = this.props.auth;
 
     return (
       <FormBox>
@@ -99,6 +95,7 @@ export class Login extends React.Component {
           placeholder="Password"
         />
         {validationError && <ErrorMessage msg={validationError} />}
+        {error && <ErrorMessage msg={errorMessage} />}
         <Button
           text={loading ? 'Logging in ...' : 'LOG IN'}
           onClick={this.handleSubmit}

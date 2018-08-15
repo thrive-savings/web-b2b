@@ -1,4 +1,4 @@
 {
-  "apiRoot": "http://localhost:3000",
+  "apiRoot": "https://c15b0e8e.ngrok.io",
   "websiteUrl": "https://thrivesavings.com"
 }
